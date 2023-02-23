@@ -33,7 +33,30 @@ const CreatePost = () => {
 			alert('Please enter a prompt')
 		}
 	}
-	const handleSubmit = () => {}
+	const handleSubmit = async (e) => {
+		e.preventDefault()
+
+		if (form.prompt && form.photo) {
+			setLoading(true)
+			try {
+				const response = await fetch('http://localhost:8080/api/v1/post', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(form),
+				})
+				await response.json()
+				navigate('/')
+			} catch (error) {
+				console.error(err)
+			} finally {
+				setLoading(false)
+			}
+		} else {
+			alert('Please enter a prompt and generatet an image')
+		}
+	}
 	const handleChange = (e) => {
 		setform({ ...form, [e.target.name]: e.target.value })
 	}
